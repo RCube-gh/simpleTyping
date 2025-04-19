@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import kanaPatterns from "./kanaPatterns";
 
 function parseHiraganaSmart(text, dict) {
@@ -31,41 +31,49 @@ export default function TypingTest() {
   const [lockedRomaji, setLockedRomaji] = useState([]);
 
   const question = {
-    display: "けんかりょうせいばいおこったかんなんにょー",
-    reading: "けんかりょうせいばいおこったかんなんにょー"
+    display: "しゅうりょうんぎゃ",
+    reading: "しゅうりょうんぎゃ"
   };
 
-  const kanaList = parseHiraganaSmart(question.reading, kanaPatterns);
+  const kanaList = useMemo(() => parseHiraganaSmart(question.reading, kanaPatterns), [question.reading]);
 
   useEffect(() => {
+    if (lockedRomaji[index]) return;
     const currentKana = kanaList[index];
     const candidates = kanaPatterns[currentKana] || [];
-    setLiveCandidates(prev => {
+    setLiveCandidates((prev) => {
       const newList = [...prev];
       newList[index] = candidates;
       return newList;
     });
-  }, [index]);
+  }, [index, kanaList, lockedRomaji]);
 
   useEffect(() => {
     const handler = (e) => {
       const key = e.key;
+      if (!/^[a-z]$/.test(key)) return;
+      if(index>=kanaList.length)return;
+
       const currentKana = kanaList[index];
       const candidates = kanaPatterns[currentKana] || [];
       const newBuffer = buffer + key;
+      //console.log("currentKana",currentKana);
+      //console.log("candidates",kanaPatterns[currentKana]||[]);
+      //console.log("newBuffer",newBuffer);
 
-      const valid = candidates.filter(p => p.startsWith(newBuffer));
+
+      const valid = candidates.filter((p) => p.startsWith(newBuffer));
 
       if (valid.length > 0) {
         setBuffer(newBuffer);
-        setLiveCandidates(prev => {
+        setLiveCandidates((prev) => {
           const updated = [...prev];
           updated[index] = valid;
           return updated;
         });
 
         if (valid.length === 1) {
-          setLockedRomaji(prev => {
+          setLockedRomaji((prev) => {
             const updated = [...prev];
             updated[index] = valid[0];
             return updated;
@@ -73,35 +81,60 @@ export default function TypingTest() {
         }
 
         if (valid.includes(newBuffer)) {
-          setIndex(index + 1);
+          setLockedRomaji((prev) => {
+            const updated = [...prev];
+            updated[index] = newBuffer;
+            return updated;
+          });
+          setIndex((prev) => prev + 1);
           setBuffer("");
         }
+
       }
     };
+
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [buffer, index, kanaList]);
+  }, [buffer, index, kanaList, lockedRomaji]);
+//console.log("🟣 kanaList:", kanaList);
+//console.log("🔵 lockedRomaji:", lockedRomaji);
+//console.log("[] confirmed",lockedRomaji.join("")+buffer)
+//console.log("🟡 buffer:", buffer);
+//console.log("🟠 liveCandidates:", liveCandidates);
+
 
   return (
     <div style={{ padding: "2rem", fontFamily: "monospace" }}>
       <h2>{question.display}</h2>
+
       <div style={{ fontSize: "1.5rem", marginTop: "1rem" }}>
-        {kanaList.map((kana, i) => {
-          const isDone = i < index;
-          const isCurrent = i === index;
-          const color = isDone ? "#ccc" : isCurrent ? "#0f0" : "#fff";
+        {(() => {
+          const view = [];
+          for (let i = 0; i < kanaList.length; i++) {
+            const kana = kanaList[i];
+            const pattern = lockedRomaji[i] || liveCandidates[i]?.[0] || kanaPatterns[kana]?.[0] || "";
 
-          const displayRomaji =
-            lockedRomaji[i] ||
-            liveCandidates[i]?.[0] ||
-            kanaPatterns[kana]?.[0] || "";
+            for (let j = 0; j < pattern.length; j++) {
+                let color = "#fff";
 
-          return (
-            <span key={i} style={{ color, marginRight: "0.3rem" }}>
-              {displayRomaji}
-            </span>
-          );
-        })}
+                if (i < index) {
+                    color = "#777"; // 完了
+                } else if (i === index) {
+                    if (j < buffer.length) {
+                        color = "#777"; // 入力中
+                    } else if (j === buffer.length) {
+                        color = "#0f0"; // 次に打つ文字
+                    }
+                }
+                view.push(
+                <span key={`${i}-${j}`} style={{ color }}>
+                    {pattern[j]}
+                </span>
+                );
+            }
+        }
+          return view;
+        })()}
       </div>
     </div>
   );
