@@ -64,6 +64,7 @@ const kanaPatterns = {
     "んびゃ": ["nbya", "nbilya", "nbixya", "nnbilya", "nnbixya", "nnbya", "xnbilya", "xnbixya", "xnbya"], "んびゅ": ["nbyu", "nbilyu", "nbixyu", "nnbilyu", "nnbixyu", "nnbyu", "xnbilyu", "xnbixyu", "xnbyu"], "んびょ": ["nbyo", "nbilyo", "nbixyo", "nnbilyo", "nnbixyo", "nnbyo", "xnbilyo", "xnbixyo", "xnbyo"],
     "んぴゃ": ["npya", "nnpilya", "nnpixya", "nnpya", "npilya", "npixya", "xnpilya", "xnpixya", "xnpya"], "んぴゅ": ["npyu", "nnpilyu", "nnpixyu", "nnpyu", "npilyu", "npixyu", "xnpilyu", "xnpixyu", "xnpyu"], "んぴょ": [ "npyo","nnpilyo", "nnpixyo", "nnpyo", "npilyo", "npixyo", "xnpilyo", "xnpixyo", "xnpyo"],
     "んみゃ": ["nmya","nmilya", "nmixya",  "nnmilya", "nnmixya", "nnmya", "xnmilya", "xnmixya", "xnmya"], "んみゅ": ["nmyu","nmilyu", "nmixyu",  "nnmilyu", "nnmixyu", "nnmyu", "xnmilyu", "xnmixyu", "xnmyu"], "んみょ": ["nmyo","nmilyo", "nmixyo",  "nnmilyo", "nnmixyo", "nnmyo", "xnmilyo", "xnmixyo", "xnmyo"],
-    "んりゃ": ["nrya", "nnrilya", "nnrixya", "nnrya", "nrilya", "nrixya", "xnrilya", "xnrixya", "xnrya"], "んりゅ": ["nryu","nnrilyu", "nnrixyu", "nnryu", "nrilyu", "nrixyu",  "xnrilyu", "xnrixyu", "xnryu"], "んりょ": ["nryo", "nnrilyo", "nnrixyo", "nnryo", "nrilyo", "nrixyo", "xnrilyo", "xnrixyo", "xnryo"]
+    "んりゃ": ["nrya", "nnrilya", "nnrixya", "nnrya", "nrilya", "nrixya", "xnrilya", "xnrixya", "xnrya"], "んりゅ": ["nryu","nnrilyu", "nnrixyu", "nnryu", "nrilyu", "nrixyu",  "xnrilyu", "xnrixyu", "xnryu"], "んりょ": ["nryo", "nnrilyo", "nnrixyo", "nnryo", "nrilyo", "nrixyo", "xnrilyo", "xnrixyo", "xnryo"],
+    "ー": ["-"], "！":["!"], "？":["?"],
 };
 export default kanaPatterns;

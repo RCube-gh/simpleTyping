@@ -31,8 +31,8 @@ export default function TypingTest() {
   const [lockedRomaji, setLockedRomaji] = useState([]);
 
   const question = {
-    display: "しゅうりょうんぎゃ",
-    reading: "しゅうりょうんぎゃ"
+    display: "ラーメン！？",
+    reading: "らーめん！？"
   };
 
   const kanaList = useMemo(() => parseHiraganaSmart(question.reading, kanaPatterns), [question.reading]);
@@ -51,7 +51,7 @@ export default function TypingTest() {
   useEffect(() => {
     const handler = (e) => {
       const key = e.key;
-      if (!/^[a-z]$/.test(key)) return;
+      if (!/^[a-z-!?]$/.test(key)) return;
       if(index>=kanaList.length)return;
 
       const currentKana = kanaList[index];
